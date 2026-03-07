@@ -1,16 +1,42 @@
 {
   "name": "chrono-eis-versiegelung",
   "version": "1.0.0",
-  "description": "",
+  "description": "AI-powered commit message generator using Google Gemini",
   "main": "dist/index.js",
   "bin": {
     "chrono": "./dist/index.js"
   },
+  "keywords": [
+    "git",
+    "commit",
+    "ai",
+    "gemini",
+    "conventional-commits",
+    "cli",
+    "commit-message"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/chrono-eis-versiegelung"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/chrono-eis-versiegelung/issues"
+  },
+  "homepage": "https://github.com/yourusername/chrono-eis-versiegelung#readme",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "QUICKSTART.md"
+  ],
   "scripts": {
     "build": "tsc",
     "start": "node ./dist/index.js",
     "dev": "tsx src/index.ts",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@clack/prompts": "^0.7.0",

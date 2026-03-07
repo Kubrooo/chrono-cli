@@ -7,6 +7,15 @@ dotenv.config();
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
 export const generateCommitMessage = async (diff: string) => {
+    const apiKey = process.env.GEMINI_API_KEY;
+    
+    if (!apiKey) {
+        throw new Error(
+            'GEMINI_API_KEY not found. Please set it in your .env file.\n' +
+            'Get your API key from: https://aistudio.google.com/app/apikey'
+        );
+    }
+
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash"})
     const { jiraPrefix } = await getPreferences();
 

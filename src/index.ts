@@ -6,11 +6,44 @@ import { generateCommitMessage } from "./core/ai.js";
 import { getPreferences, setPreference } from "./core/config.js";
 import pc from "picocolors";
 
-async function main() {
-  intro(pc.bgCyan(pc.black(" chrono-eis-versiegelung ")));
+const VERSION = "1.0.0";
 
+function showHelp() {
+  console.log(`
+${pc.bold(pc.cyan('chrono'))} - AI-powered commit message generator
+
+${pc.bold('Usage:')}
+  chrono              Generate commit message for staged changes
+  chrono --setup      Configure Jira prefix and preferences
+  chrono --help       Show this help message
+  chrono --version    Show version number
+
+${pc.bold('Setup:')}
+  1. Create a .env file with: GEMINI_API_KEY=your_key_here
+  2. Get your API key from: ${pc.underline('https://aistudio.google.com/app/apikey')}
+  3. Stage your changes: ${pc.dim('git add .')}
+  4. Run: ${pc.dim('chrono')}
+
+${pc.bold('Examples:')}
+  ${pc.dim('git add .')}
+  ${pc.dim('chrono')}                    # Generate commit message
+  ${pc.dim('chrono --setup')}            # Set Jira prefix (e.g., PROJ)
+`);
+}
+
+async function main() {
   const args = process.argv.slice(2);
   
+  if (args.includes('--help') || args.includes('-h')) {
+    showHelp();
+    return;
+  }
+
+  if (args.includes('--version') || args.includes('-v')) {
+    console.log(`v${VERSION}`);
+    return;
+  }
+
   if (args.includes('--setup')) {
     intro(pc.bgMagenta(pc.black(" CHRONO SETUP ")));
     
@@ -27,6 +60,7 @@ async function main() {
     return;
   }
 
+  intro(pc.bgCyan(pc.black(" chrono-eis-versiegelung ")));
   try {
     await checkIsGitRepo();
     const diff = await getStagedDiff();
