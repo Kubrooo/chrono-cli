@@ -13,8 +13,8 @@ Quick setup guide for this personal college project.
 ### 1. Clone This Repository
 
 ```bash
-git clone https://github.com/Kubrooo/chrono-eis-versiegelung.git
-cd chrono-eis-versiegelung
+git clone https://github.com/Kubrooo/chrono-cli.git
+cd chrono-cli
 ```
 
 ### 2. Install Dependencies

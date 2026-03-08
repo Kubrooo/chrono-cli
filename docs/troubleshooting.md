@@ -7,7 +7,7 @@
 #### Command Not Found After Installation
 
 **Problem:**
-After running `npm install -g chrono-eis-versiegelung`, the `chrono` command is not recognized.
+After cloning and linking the project, the `chrono` command is not recognized.
 
 **Symptoms:**
 ```bash
@@ -17,9 +17,9 @@ bash: chrono: command not found
 
 **Solutions:**
 
-1. **Verify installation:**
+1. **Verify you linked the project:**
    ```bash
-   npm list -g chrono-eis-versiegelung
+   npm link
    ```
 
 2. **Check npm global bin directory:**
@@ -43,9 +43,10 @@ bash: chrono: command not found
 5. **Restart terminal:**
    Close and reopen your terminal after installation.
 
-6. **Use npx as alternative:**
+6. **Run from project directory:**
    ```bash
-   npx chrono-eis-versiegelung
+   cd chrono-cli
+   npm start
    ```
 
 #### Permission Errors During Installation (Linux/macOS)
@@ -62,23 +63,27 @@ npm ERR! path /usr/local/lib/node_modules
 
 **Solutions:**
 
-1. **Use npx (recommended):**
+1. **Clone the project instead:**
    ```bash
-   npx chrono-eis-versiegelung
+   git clone https://github.com/Kubrooo/chrono-cli.git
+   cd chrono-cli
+   npm install
+   npm run build
+   npm link
    ```
 
-2. **Configure npm to use different directory:**
+2. **Fix npm permissions and link:**
    ```bash
    mkdir ~/.npm-global
    npm config set prefix '~/.npm-global'
    echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.profile
    source ~/.profile
-   npm install -g chrono-eis-versiegelung
+   npm link
    ```
 
 3. **Use sudo (not recommended):**
    ```bash
-   sudo npm install -g chrono-eis-versiegelung
+   sudo npm link
    ```
 
 #### Build Errors from Source

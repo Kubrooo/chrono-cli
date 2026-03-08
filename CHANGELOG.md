@@ -35,4 +35,4 @@ First release of Chrono as a personal college project.
 - Each user needs their own free Gemini API key
 - Uses Google Gemini free tier API
 
-[1.0.0]: https://github.com/Kubrooo/chrono-eis-versiegelung/releases/tag/v1.0.0
+[1.0.0]: https://github.com/Kubrooo/chrono-cli/releases/tag/v1.0.0

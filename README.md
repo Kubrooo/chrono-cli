@@ -24,8 +24,8 @@ A personal project by a college student: An AI-powered command-line tool that ge
 
 1. **Clone this repository:**
    ```bash
-   git clone https://github.com/Kubrooo/chrono-eis-versiegelung.git
-   cd chrono-eis-versiegelung
+   git clone https://github.com/Kubrooo/chrono-cli.git
+   cd chrono-cli
    ```
 
 2. **Install dependencies:**
@@ -201,8 +201,6 @@ Want to modify or extend Chrono?
 
 ### Development Workflow
 
-### Development Workflow
-
 ```bash
 # Already cloned and installed? Start here:
 
@@ -221,7 +219,7 @@ npm start
 ### Project Structure
 
 ```
-chrono-eis-versiegelung/
+chrono-cli/
 ├── src/
 │   ├── core/           # Core functionality
 │   ├── utils/          # Utility functions
@@ -270,8 +268,8 @@ Built with:
 
 This is a personal college project, but feel free to:
 
-- Report bugs: [GitHub Issues](https://github.com/Kubrooo/chrono-eis-versiegelung/issues)
-- Suggest features: [GitHub Issues](https://github.com/Kubrooo/chrono-eis-versiegelung/issues)
+- Report bugs: [GitHub Issues](https://github.com/Kubrooo/chrono-cli/issues)
+- Suggest features: [GitHub Issues](https://github.com/Kubrooo/chrono-cli/issues)
 - Fork and modify for your own use
 - Learn from the code
 

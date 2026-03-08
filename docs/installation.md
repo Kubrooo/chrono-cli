@@ -24,8 +24,8 @@ Since this is a personal project, you must clone the repository:
 
 ```bash
 # Clone the repository
-git clone https://github.com/Kubrooo/chrono-eis-versiegelung.git
-cd chrono-eis-versiegelung
+git clone https://github.com/Kubrooo/chrono-cli.git
+cd chrono-cli
 
 # Install dependencies
 npm install
@@ -64,32 +64,12 @@ Note: This project is NOT published to npm. The following will NOT work:
 
 ```bash
 # This does NOT work - project is not on npm
-npm install -g chrono-eis-versiegelung  # ❌ Not available
+npm install -g chrono-cli  # ❌ Not available
 ```
 
 ### Local Project Installation (Not Applicable)
 
-Install as a development dependency in a specific project:
-
-```bash
-npm install --save-dev chrono-eis-versiegelung
-```
-
-Add to your package.json scripts:
-
-```json
-{
-  "scripts": {
-    "commit": "chrono"
-  }
-}
-```
-
-Then use it with:
-
-```bash
-npm run commit
-```
+Note: This method is not applicable since the project is not published to npm.
 
 ### Installation from Source
 
@@ -97,8 +77,8 @@ This is the same as the required method above. For development:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/chrono-eis-versiegelung.git
-cd chrono-eis-versiegelung
+git clone https://github.com/Kubrooo/chrono-cli.git
+cd chrono-cli
 
 # Install dependencies
 npm install
@@ -176,14 +156,14 @@ If you encounter EACCES errors during global installation:
 
 ```bash
 # Option 1: Use npx (recommended)
-npx chrono-eis-versiegelung
+npx chrono-cli
 
 # Option 2: Fix npm permissions
 mkdir ~/.npm-global
 npm config set prefix '~/.npm-global'
 echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.profile
 source ~/.profile
-npm install -g chrono-eis-versiegelung
+npm link  # Use npm link since you cloned the repo
 ```
 
 ### API Key Not Detected
@@ -207,16 +187,15 @@ If building from source fails:
 
 ## Updating Chrono
 
-### Global Installation
+### From Cloned Repository
+
+Since this is a cloned project, update by pulling latest changes:
 
 ```bash
-npm update -g chrono-eis-versiegelung
-```
-
-### Local Installation
-
-```bash
-npm update chrono-eis-versiegelung
+cd chrono-cli
+git pull origin main
+npm install
+npm run build
 ```
 
 ### Check Current Version
@@ -227,16 +206,18 @@ chrono --version
 
 ## Uninstallation
 
-### Global Installation
+### Unlink Global Command
 
 ```bash
-npm uninstall -g chrono-eis-versiegelung
+npm unlink
 ```
 
-### Local Installation
+### Remove Cloned Repository
 
 ```bash
-npm uninstall chrono-eis-versiegelung
+cd ..
+rm -rf chrono-cli  # Linux/macOS
+rmdir /s chrono-cli  # Windows
 ```
 
 ### Clean Up Configuration

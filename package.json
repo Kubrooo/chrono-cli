@@ -1,5 +1,5 @@
 {
-  "name": "chrono-eis-versiegelung",
+  "name": "chrono-cli",
   "version": "1.0.0",
   "description": "AI-powered commit message generator using Google Gemini - A personal college project",
   "main": "dist/index.js",
@@ -22,12 +22,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Kubrooo/chrono-eis-versiegelung"
+    "url": "https://github.com/Kubrooo/chrono-cli"
   },
   "bugs": {
-    "url": "https://github.com/Kubrooo/chrono-eis-versiegelung/issues"
+    "url": "https://github.com/Kubrooo/chrono-cli/issues"
   },
-  "homepage": "https://github.com/Kubrooo/chrono-eis-versiegelung#readme",
+  "homepage": "https://github.com/Kubrooo/chrono-cli#readme",
   "files": [
     "dist",
     "docs",

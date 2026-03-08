@@ -162,8 +162,8 @@ If you can't find what you're looking for:
 
 1. Use the search function in your editor or browser
 2. Check the [Troubleshooting Guide](troubleshooting.md)
-3. Search [GitHub Issues](https://github.com/yourusername/chrono-eis-versiegelung/issues)
-4. Ask in [GitHub Discussions](https://github.com/yourusername/chrono-eis-versiegelung/discussions)
+3. Search [GitHub Issues](https://github.com/Kubrooo/chrono-cli/issues)
+4. Ask in [GitHub Discussions](https://github.com/Kubrooo/chrono-cli/discussions)
 5. Create a new issue with your question
 
 ## Contributing to Documentation

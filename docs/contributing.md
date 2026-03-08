@@ -38,13 +38,13 @@ Thank you for considering contributing to Chrono. This document provides guideli
 1. Fork the repository on GitHub
 2. Clone your fork locally:
    ```bash
-   git clone https://github.com/your-username/chrono-eis-versiegelung.git
-   cd chrono-eis-versiegelung
+   git clone https://github.com/your-username/chrono-cli.git
+   cd chrono-cli
    ```
 
 3. Add the upstream repository:
    ```bash
-   git remote add upstream https://github.com/original-owner/chrono-eis-versiegelung.git
+   git remote add upstream https://github.com/Kubrooo/chrono-cli.git
    ```
 
 4. Install dependencies:
@@ -107,7 +107,7 @@ Thank you for considering contributing to Chrono. This document provides guideli
 ## Project Structure
 
 ```
-chrono-eis-versiegelung/
+chrono-cli/
 ├── src/
 │   ├── core/
 │   │   ├── ai.ts           # AI integration logic
