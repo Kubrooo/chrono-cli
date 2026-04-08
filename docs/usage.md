@@ -30,6 +30,34 @@ This is the primary command. It analyzes your staged changes and generates an ap
 3. Receives and displays a suggested commit message
 4. Presents options for next steps
 
+### Non-Interactive Modes
+
+```bash
+chrono --yes
+chrono --dry-run
+chrono --message "feat: update auth flow"
+```
+
+These flags are useful when you want chrono to run without prompts.
+
+**`--yes`**
+
+- Generates a commit message with AI
+- Skips the action prompt
+- Commits immediately with the suggested message
+
+**`--dry-run`**
+
+- Generates a commit message with AI
+- Prints the suggestion to the terminal
+- Does not create a commit
+
+**`--message`**
+
+- Uses the message you provide directly
+- Skips AI generation entirely
+- Commits immediately unless `--dry-run` is also provided
+
 ### Configure Preferences
 
 ```bash

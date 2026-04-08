@@ -80,6 +80,9 @@ npm run dev
 
 ```bash
 chrono              # Generate commit message for staged changes
+chrono --yes        # Generate and commit without prompting
+chrono --dry-run    # Show the generated message without committing
+chrono --message    # Commit with your own message without prompting
 chrono --setup      # Configure preferences (Jira prefix)
 chrono --help       # Show help information
 chrono --version    # Show version number
@@ -95,6 +98,8 @@ chrono --version    # Show version number
    - Edit the message before committing
    - Regenerate for a different suggestion
    - Cancel the operation
+
+For automated or script-friendly workflows, use `chrono --yes` to skip the prompt and commit the AI suggestion, `chrono --dry-run` to preview the suggestion only, or `chrono --message "..."` to commit with a custom message.
 
 ### Example
 

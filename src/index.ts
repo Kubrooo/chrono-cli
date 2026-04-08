@@ -3,10 +3,52 @@ import { intro, outro, spinner, select, text, isCancel } from "@clack/prompts";
 import { checkIsGitRepo, getStagedDiff, getStagedFiles, exectCommit } from "./core/git.js";
 import { handleError } from "./utils/error-handler.js";
 import { generateCommitMessage } from "./core/ai.js";
-import { getPreferences, setPreference } from "./core/config.js";
+import { setPreference } from "./core/config.js";
 import pc from "picocolors";
 
 const VERSION = "1.0.0";
+
+type CliOptions = {
+  help: boolean;
+  version: boolean;
+  setup: boolean;
+  dryRun: boolean;
+  autoAccept: boolean;
+  message?: string;
+};
+
+function getFlagValue(args: string[], flag: string) {
+  const flagIndex = args.findIndex((arg) => arg === flag || arg.startsWith(`${flag}=`));
+
+  if (flagIndex === -1) {
+    return undefined;
+  }
+
+  const flagArg = args[flagIndex];
+
+  if (flagArg.includes("=")) {
+    return flagArg.slice(flag.length + 1);
+  }
+
+  const value = args[flagIndex + 1];
+
+  if (!value || value.startsWith("-")) {
+    throw new Error(`${flag} requires a value.`);
+  }
+
+  return value;
+}
+
+export function parseCliOptions(args: string[]): CliOptions {
+  return {
+    help: args.includes("--help") || args.includes("-h"),
+    version: args.includes("--version") || args.includes("-v"),
+    setup: args.includes("--setup"),
+    dryRun: args.includes("--dry-run"),
+    autoAccept: args.includes("--yes") || args.includes("-y"),
+    message: getFlagValue(args, "--message"),
+  };
+}
 
 function showHelp() {
   console.log(`
@@ -14,6 +56,9 @@ ${pc.bold(pc.cyan('chrono'))} - AI-powered commit message generator
 
 ${pc.bold('Usage:')}
   chrono              Generate commit message for staged changes
+  chrono --yes        Generate and commit without prompting
+  chrono --dry-run    Show the generated message without committing
+  chrono --message    Commit with a custom message without prompting
   chrono --setup      Configure Jira prefix and preferences
   chrono --help       Show this help message
   chrono --version    Show version number
@@ -27,24 +72,58 @@ ${pc.bold('Setup:')}
 ${pc.bold('Examples:')}
   ${pc.dim('git add .')}
   ${pc.dim('chrono')}                    # Generate commit message
+  ${pc.dim('chrono --yes')}              # Commit using the AI suggestion immediately
+  ${pc.dim('chrono --dry-run')}          # Preview the AI suggestion only
+  ${pc.dim('chrono --message "fix: ..."')} # Commit with your own message
   ${pc.dim('chrono --setup')}            # Set Jira prefix (e.g., PROJ)
 `);
 }
 
+function printStagedChanges(files: string) {
+  console.log(pc.dim('\nStaged changes:'));
+  files.split('\n').filter(Boolean).forEach(line => {
+    const [status, file] = line.split('\t');
+    const statusColor = status === 'A' ? pc.green : status === 'M' ? pc.yellow : pc.red;
+    const statusText = status === 'A' ? 'Added' : status === 'M' ? 'Modified' : 'Deleted';
+    console.log(`  ${statusColor(statusText.padEnd(8))} ${pc.dim(file)}`);
+  });
+  console.log('');
+}
+
+async function commitWithMessage(message: string) {
+  const sCommit = spinner();
+  sCommit.start("Executing commit...");
+  await exectCommit(message);
+  sCommit.stop(pc.green("✔ Commit successful!"));
+}
+
+async function showGeneratedMessage(diff: string) {
+  const s = spinner();
+  s.start("AI is thinking of a commit message...");
+  const aiMessage = await generateCommitMessage(diff);
+  s.stop("AI suggestion ready!");
+
+  console.log(`\n${pc.dim("Suggested message:")}`);
+  console.log(pc.cyan(aiMessage));
+
+  return aiMessage;
+}
+
 async function main() {
   const args = process.argv.slice(2);
+  const options = parseCliOptions(args);
   
-  if (args.includes('--help') || args.includes('-h')) {
+  if (options.help) {
     showHelp();
     return;
   }
 
-  if (args.includes('--version') || args.includes('-v')) {
+  if (options.version) {
     console.log(`v${VERSION}`);
     return;
   }
 
-  if (args.includes('--setup')) {
+  if (options.setup) {
     intro(pc.bgMagenta(pc.black(" CHRONO SETUP ")));
     
     const jira = await text({
@@ -64,18 +143,38 @@ async function main() {
   try {
     await checkIsGitRepo();
     
-    // Show diff preview
     const files = await getStagedFiles();
-    console.log(pc.dim('\nStaged changes:'));
-    files.split('\n').forEach(line => {
-      const [status, file] = line.split('\t');
-      const statusColor = status === 'A' ? pc.green : status === 'M' ? pc.yellow : pc.red;
-      const statusText = status === 'A' ? 'Added' : status === 'M' ? 'Modified' : 'Deleted';
-      console.log(`  ${statusColor(statusText.padEnd(8))} ${pc.dim(file)}`);
-    });
-    console.log('');
+    printStagedChanges(files);
     
     const diff = await getStagedDiff();
+
+    if (options.message) {
+      console.log(pc.dim('Using custom message from the command line.'));
+
+      if (options.dryRun) {
+        console.log(`\n${pc.dim('Dry run message:')}`);
+        console.log(pc.cyan(options.message));
+        outro(pc.yellow('Dry run complete. No commit was created.'));
+        return;
+      }
+
+      await commitWithMessage(options.message);
+      outro(pc.bgGreen(pc.black(" DONE ")));
+      return;
+    }
+
+    if (options.dryRun || options.autoAccept) {
+      const aiMessage = await showGeneratedMessage(diff);
+
+      if (options.dryRun) {
+        outro(pc.yellow('Dry run complete. No commit was created.'));
+        return;
+      }
+
+      await commitWithMessage(aiMessage);
+      outro(pc.bgGreen(pc.black(" DONE ")));
+      return;
+    }
 
     let finalMessage = "";
     let isDone = false;
@@ -140,4 +239,13 @@ async function main() {
   }
 }
 
-main();
+const isDirectExecution = Boolean(
+  process.argv[1] && (
+    process.argv[1].endsWith("src/index.ts") ||
+    process.argv[1].endsWith("dist/index.js")
+  )
+);
+
+if (isDirectExecution) {
+  main();
+}
